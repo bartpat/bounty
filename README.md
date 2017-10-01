@@ -20,9 +20,13 @@ odoo.default({
   lineHeight: 1.35,
   letterSpacing: 1,
   animationDelay: 100,
-  letterAnimationDelay: 100
+  letterAnimationDelay: 100,
+  transition: transitionFunction,
+  easing: easingFunction
 });
 ```
+You can find examples of the transition and easing function in the `src/transition.js` file.
+
 If you want to **cancel** the ongoing animation just call returned function:
 ```js
 const cancel = odoo.default({ el: '.js-odoo', value: '£42,000,000' });

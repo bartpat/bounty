@@ -1,6 +1,6 @@
 import loop from './loop';
 import { select, append, attr, style, text } from './selection';
-import transition from './transition';
+import defaultTransition from './transition';
 
 const DIGITS_COUNT = 10;
 const ROTATIONS = 3;
@@ -90,7 +90,9 @@ export default ({
   lineHeight = 1.35,
   letterSpacing = 1,
   animationDelay = 100,
-  letterAnimationDelay = 100
+  letterAnimationDelay = 100,
+  transition = defaultTransition,
+  easing
 }) => {
   const element = select(el);
   const computedStyle = window.getComputedStyle(element);
@@ -165,7 +167,8 @@ export default ({
         const motionValue = (Math.abs(Math.abs(value - filterOrigin) - filterOrigin) - sourceDistance) / 100;
         digit.filter::attr('stdDeviation', `0 ${motionValue}`);
       },
-      end: i === 0 ? () => cancelAnimation() : (e) => e
+      end: i === 0 ? () => cancelAnimation() : (e) => e,
+      easing
     });
     transitions.push(digitTransition);
   });
