@@ -102,7 +102,8 @@ export default ({
   lineHeight = 1.35,
   letterSpacing = 1,
   animationDelay = 100,
-  letterAnimationDelay = 100
+  letterAnimationDelay = 100,
+  easing
 }) => {
   const element = select(el);
   const computedStyle = window.getComputedStyle(element);
@@ -181,7 +182,8 @@ export default ({
           (Math.abs(Math.abs(value - filterOrigin) - filterOrigin) - sourceDistance) / 100;
         digit.filter::attr('stdDeviation', `0 ${motionValue}`);
       },
-      end: i === 0 ? () => cancelAnimation() : e => e
+      end: i === 0 ? () => cancelAnimation() : e => e,
+      easing
     });
     transitions.push(digitTransition);
   });
