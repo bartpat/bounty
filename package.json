@@ -1,6 +1,6 @@
 {
   "name": "bounty",
-  "version": "1.1.7",
+  "version": "1.1.8-fork1",
   "description": "SVG odometer effect",
   "main": "lib/bounty.js",
   "scripts": {
@@ -13,7 +13,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/coderitual/bounty.git"
+    "url": "git+https://github.com/bartpat/bounty.git"
   },
   "keywords": [
     "svg",
@@ -24,7 +24,7 @@
     "library",
     "webcomponents"
   ],
-  "author": "Michal Skowronek <skowronkow@gmail.com>",
+  "author": "Michal Skowronek <skowronkow@gmail.com> (+ custom easing by bartpat)",
   "license": "MIT",
   "devDependencies": {
     "babel-core": "^6.13.2",
