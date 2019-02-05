@@ -26,7 +26,6 @@ const createCharacter = (svg, el, fontSize) =>
   svg
     ::append('g')
     ::append('text')
-    ::style('filter', `url(#createShadowFailFilter)`)
     ::text(el);
 
 const createFilter = (defs, id) =>
@@ -38,15 +37,6 @@ const createFilter = (defs, id) =>
     ::append('feGaussianBlur')
     ::attr('class', 'blurValues')
     ::attr('in', 'SourceGraphic')
-    ::attr('stdDeviation', '0 0');
-
-const createShadowFailFilter = defs =>
-  defs
-    ::append('filter')
-    ::attr('id', `createShadowFailFilter`)
-    ::attr('width', '300%')
-    ::attr('x', '-100%')
-    ::append('feGaussianBlur')
     ::attr('stdDeviation', '0 0');
 
 const createGradient = (defs, id) =>
@@ -121,7 +111,6 @@ export default ({
   const defs = root::append('defs');
   createGradient(defs, salt);
   createMask(defs, salt);
-  createShadowFailFilter(defs);
 
   const prepareValues = (value, secondValue) => {
     const values = String(value)
@@ -130,7 +119,8 @@ export default ({
 
     const digitIndex = String(value).search(/\d/);
     while (secondValue.length > values.length) {
-      const char = secondValue[secondValue.length - values.length - 1 + digitIndex];
+      const char =
+        secondValue[secondValue.length - values.length - 1 + digitIndex];
       values.splice(digitIndex, 0, isNaN(parseInt(char, 10)) ? char : '0');
     }
     return values;
@@ -169,17 +159,26 @@ export default ({
   const digits = chars.filter(char => char.isDigit);
   digits.forEach((digit, i) => {
     const sourceDistance = digit.initial * (fontSize * lineHeight);
-    const targetDistance = (ROTATIONS * DIGITS_COUNT + digit.value) * (fontSize * lineHeight);
+    const targetDistance =
+      (ROTATIONS * DIGITS_COUNT + digit.value) * (fontSize * lineHeight);
     const digitTransition = transition({
       from: sourceDistance,
       to: targetDistance,
       delay: (digits.length - 1 - i) * letterAnimationDelay + animationDelay,
       step(value) {
-        digit.offset.y = offset + value % (fontSize * lineHeight * DIGITS_COUNT);
-        digit.node::attr('transform', `translate(${digit.offset.x}, ${digit.offset.y})`);
+        digit.offset.y =
+          offset + (value % (fontSize * lineHeight * DIGITS_COUNT));
+        digit.node::attr(
+          'transform',
+          `translate(${digit.offset.x}, ${digit.offset.y})`
+        );
         const filterOrigin = (sourceDistance + targetDistance) / 2;
-        const motionValue =
-          (Math.abs(Math.abs(value - filterOrigin) - filterOrigin) - sourceDistance) / 100;
+        const motionValue = Number(
+          Math.abs(
+            Math.abs(Math.abs(value - filterOrigin) - filterOrigin) -
+              sourceDistance
+          ) / 100
+        ).toFixed(1);
         digit.filter::attr('stdDeviation', `0 ${motionValue}`);
       },
       end: i === 0 ? () => cancelAnimation() : e => e,
@@ -208,7 +207,10 @@ export default ({
     canvasWidth -= letterSpacing;
 
     chars.forEach(char => {
-      char.node::attr('transform', `translate(${char.offset.x}, ${char.offset.y})`);
+      char.node::attr(
+        'transform',
+        `translate(${char.offset.x}, ${char.offset.y})`
+      );
     });
 
     setViewBox(root, canvasWidth, canvasHeight);
